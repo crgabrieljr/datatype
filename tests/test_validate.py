@@ -7,7 +7,11 @@ from datatype.validation import (BadDatatypeDefinitionError,
 
 
 def test_is_valid_primitive():
-    assert is_valid("int", 5)
+    assert is_valid('int', 5)
+    assert is_valid('int', '5')
+    assert is_valid('float', '1.0')
+    assert is_valid('bool', '0')
+    assert is_valid('bool', 1)
 
 
 def test_is_valid_object():
@@ -16,7 +20,7 @@ def test_is_valid_object():
 
 
 def test_failures_primitive():
-    assert failures('int', '5') == ['expected int, got str']
+    assert failures('int', 'foo') == ['expected int, got str']
 
 
 def test_failures_unicode_is_str():

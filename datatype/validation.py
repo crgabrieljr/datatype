@@ -44,10 +44,19 @@ def failures(datatype, value, path=''):
                 fails.append(_failure(path,
                     'unexpected null for non-nullable type'))
         elif val_type not in req_type:
-            fails.append(_failure(path,
-                'expected %s, got %s',
-                req_type[0].__name__, val_type.__name__
-            ))
+            if datatype != 'str':
+                for t in req_type:
+                    try:
+                        value = t(value)
+                    except TypeError:
+                        pass
+                    except ValueError:
+                        pass
+            if type(value) not in req_type:
+                fails.append(_failure(path,
+                    'expected %s, got %s',
+                    req_type[0].__name__, val_type.__name__
+                ))
 
     # Object Validation
     elif dt_type == dict:
